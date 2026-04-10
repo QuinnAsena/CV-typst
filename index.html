@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quinn Asena — CV</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    :root {
+      --teal:      #147C91;
+      --muted:     #6b6b6b;
+      --sidebar-w: 210px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 10.5pt;
+      line-height: 1.55;
+      color: #1a1a1a;
+      display: flex;
+      min-height: 100vh;
+    }
+
+    a { color: var(--teal); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* ── Sidebar ── */
+    #sidebar {
+      width: var(--sidebar-w);
+      background: var(--teal);
+      color: white;
+      padding: 2.4rem 0.9rem 2rem 1.1rem;
+      flex-shrink: 0;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+    }
+    #sidebar a { color: white; }
+    #sidebar a:hover { opacity: 0.85; text-decoration: none; }
+
+    .sb-name    { font-size: 17pt; font-weight: bold; line-height: 1.2; margin-bottom: 0.25em; }
+    .sb-tagline { font-size: 9.5pt; margin-bottom: 0.1em; }
+    .sb-affil   { font-size: 8pt; color: rgba(255,255,255,0.85); line-height: 1.4; }
+
+    .s-head {
+      margin-top: 1.5em;
+      margin-bottom: 0.45em;
+      font-size: 6pt;
+      font-weight: bold;
+      letter-spacing: 1.5pt;
+      text-transform: uppercase;
+      border-bottom: 0.4pt solid rgba(255,255,255,0.5);
+      padding-bottom: 0.3em;
+    }
+
+    .contact-item {
+      font-size: 8pt;
+      margin-bottom: 0.35em;
+      display: flex;
+      align-items: center;
+      gap: 0.5em;
+    }
+    .contact-item i { width: 1em; text-align: center; flex-shrink: 0; font-size: 9pt; }
+
+    .lab-item      { font-size: 8pt; margin-bottom: 0.45em; line-height: 1.35; }
+    .lab-inst      { font-size: 7.5pt; color: rgba(255,255,255,0.8); }
+    .skills-text   { font-size: 8pt; line-height: 1.5; }
+    .hobbies-text  { font-size: 8pt; line-height: 1.5; }
+
+    /* ── Main content ── */
+    #content {
+      flex: 1;
+      padding: 2rem 2.2rem 3rem 1.4rem;
+      min-width: 0;
+    }
+
+    /* ── Section heading ── */
+    .sec-head {
+      margin-top: 1.2em;
+      margin-bottom: 0.08em;
+    }
+    .sec-head h2 {
+      font-size: 10pt;
+      font-weight: bold;
+      color: var(--teal);
+      letter-spacing: 0.8pt;
+      text-transform: uppercase;
+    }
+    .sec-rule {
+      border: none;
+      border-top: 0.5pt solid var(--teal);
+      margin: 0.15em 0 0.35em;
+    }
+
+    /* ── CV entry ── */
+    .cv-entry { margin-bottom: 0.55em; }
+    .cv-entry-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 1em;
+    }
+    .cv-left      { flex: 1; min-width: 0; }
+    .cv-title     { font-weight: bold; }
+    .cv-loc       { font-size: 8.5pt; color: var(--muted); font-style: italic; }
+    .cv-right     { text-align: right; flex-shrink: 0; }
+    .cv-org       { font-size: 8.5pt; font-style: italic; }
+    .cv-dates     { font-size: 8.5pt; font-style: italic; color: var(--muted); }
+    .cv-body      { padding-left: 1.1em; margin-top: 0.15em; }
+    .cv-body ul   { padding-left: 1.1em; margin: 0; }
+    .cv-body li   { margin-bottom: 0.05em; }
+
+    /* ── Publications ── */
+    .pub-list    { list-style: disc; padding-left: 1.2em; }
+    .pub-list li { margin-bottom: 0.45em; line-height: 1.5; }
+
+    /* ── Peer review table ── */
+    .review-table    { border-collapse: collapse; width: 100%; }
+    .review-table td { padding: 0.25em 0.8em 0.25em 0; vertical-align: top; }
+    .review-table td:first-child { font-style: italic; white-space: nowrap; }
+
+    /* ── Research interests ── */
+    .research-p { line-height: 1.6; margin-bottom: 0.3em; }
+
+    /* ── Responsive ── */
+    @media (max-width: 600px) {
+      body { flex-direction: column; }
+      #sidebar {
+        width: 100%;
+        height: auto;
+        position: static;
+        padding: 1.5rem 1.2rem 1.2rem;
+      }
+      #content { padding: 1.2rem 1.2rem 2rem; }
+    }
+  </style>
+</head>
+<body>
+
+<aside id="sidebar">
+  <div class="sb-name">Quinn Asena</div>
+  <div class="sb-tagline">Ecologist &amp; Data Scientist</div>
+  <div class="sb-affil">Cary Institute of Ecosystem Studies</div>
+  <div class="sb-affil">Forest Futures Lab, New York State</div>
+
+  <div class="s-head">Contact</div>
+  <div id="contact-list"></div>
+
+  <div class="s-head">Lab Affiliations</div>
+  <div id="lab-list"></div>
+
+  <div class="s-head">Skills &amp; Tools</div>
+  <div class="skills-text">R · Python · c++ · Bash · HPC · Git</div>
+
+  <div class="s-head">Interests</div>
+  <div class="hobbies-text">Classical piano · Rock climbing · Art</div>
+</aside>
+
+<main id="content">
+  <div id="research-interests"></div>
+  <div id="sections"></div>
+</main>
+
+<script>
+// ── CSV parser (handles quoted fields) ───────────────────────────────────────
+function parseCSVLine(line) {
+  const result = [];
+  let cur = '', inQ = false;
+  for (let i = 0; i < line.length; i++) {
+    if (line[i] === '"') {
+      if (inQ && line[i + 1] === '"') { cur += '"'; i++; }
+      else inQ = !inQ;
+    } else if (line[i] === ',' && !inQ) {
+      result.push(cur); cur = '';
+    } else {
+      cur += line[i];
+    }
+  }
+  result.push(cur);
+  return result;
+}
+
+function parseCSV(text) {
+  const lines = text.split('\n').filter(l => l.trim());
+  const headers = parseCSVLine(lines[0]).map(h => h.trim());
+  return lines.slice(1).map(line => {
+    const vals = parseCSVLine(line);
+    const obj = {};
+    headers.forEach((h, i) => obj[h] = (vals[i] || '').trim());
+    return obj;
+  });
+}
+
+// ── Inline markdown: [text](url) and **bold** ────────────────────────────────
+function parseInline(s) {
+  return s
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+    .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+}
+
+// ── Font Awesome icon map ────────────────────────────────────────────────────
+function faIcon(name) {
+  const map = {
+    'envelope':        '<i class="fas fa-envelope"></i>',
+    'address-card-o':  '<i class="fas fa-address-card"></i>',
+    'address-card':    '<i class="fas fa-address-card"></i>',
+    'github':          '<i class="fab fa-github"></i>',
+    'linkedin':        '<i class="fab fa-linkedin"></i>',
+    'linkedin-square': '<i class="fab fa-linkedin"></i>',
+    'orcid':           '<i class="fab fa-orcid"></i>',
+  };
+  return map[name] || '';
+}
+
+// ── Dates ────────────────────────────────────────────────────────────────────
+function datesStr(row) {
+  const s = row.start, e = row.end;
+  if (!s && !e) return '';
+  if (s === e)  return s;
+  if (!s)       return e;
+  if (!e)       return s;
+  return `${s}\u2013${e}`;
+}
+
+// ── Section heading HTML ─────────────────────────────────────────────────────
+function secHTML(label) {
+  return `<div class="sec-head"><h2>${label}</h2></div><hr class="sec-rule">`;
+}
+
+// ── CV entry HTML ────────────────────────────────────────────────────────────
+function cvEntryHTML({ title, org, loc, dates, descs }) {
+  let h = `<div class="cv-entry"><div class="cv-entry-row">`;
+  h += `<div class="cv-left"><div class="cv-title">${title}</div>`;
+  if (loc)  h += `<div class="cv-loc">${loc}</div>`;
+  h += `</div><div class="cv-right">`;
+  if (org)   h += `<div class="cv-org">${org}</div>`;
+  if (dates) h += `<div class="cv-dates">${dates}</div>`;
+  h += `</div></div>`;
+  if (descs.length) {
+    h += `<div class="cv-body"><ul>`;
+    descs.forEach(d => { h += `<li>${parseInline(d)}</li>`; });
+    h += `</ul></div>`;
+  }
+  h += `</div>`;
+  return h;
+}
+
+function renderRow(row, showDates = true) {
+  const title = row.url ? `<a href="${row.url}">${row.title}</a>` : row.title;
+  const descs = [row.description_1, row.description_2, row.description_3].filter(d => d);
+  return cvEntryHTML({
+    title,
+    org:   row.institution || null,
+    loc:   row.loc         || null,
+    dates: showDates ? datesStr(row) : '',
+    descs,
+  });
+}
+
+function renderPub(row) {
+  let h = `${parseInline(row.authors)} (${row.year}). `;
+  h += row.url ? `<a href="${row.url}">${row.title}</a>` : row.title;
+  h += `. <em>${row.journal}</em>.`;
+  if (row.note) {
+    h += ' ' + (row.note_url ? `<a href="${row.note_url}">${row.note}</a>` : row.note);
+  }
+  return `<li>${h}</li>`;
+}
+
+function renderReviewTable(rows) {
+  return `<table class="review-table">${
+    rows.map(r => `<tr><td><em>${r.title}</em></td><td>${r.institution}</td></tr>`).join('')
+  }</table>`;
+}
+
+// ── Lab groups (mirrors theme block in .typ) ─────────────────────────────────
+const labGroups = [
+  { name: 'Forest Futures Lab',      url: 'https://forestfutureslab.org/',                           inst: 'Cary Institute' },
+  { name: 'Williams Paleoecology',   url: 'https://williamspaleolab.github.io',                      inst: 'UW-Madison' },
+  { name: 'Perry Lab',               url: 'https://spatialecol.com/',                                inst: 'U. Auckland' },
+  { name: 'Neotoma Paleoecology DB', url: 'https://www.neotomadb.org',                              inst: 'Leadership Council' },
+];
+
+// ── Section manifest ─────────────────────────────────────────────────────────
+const manifest = [
+  { key: 'work_positions',        label: 'Professional Experience' },
+  { key: 'research_positions',    label: 'Research Experience' },
+  { key: 'teaching_positions',    label: 'Teaching Experience' },
+  { key: 'education',             label: 'Education' },
+  { key: 'publications',          label: 'Publications' },
+  { key: 'packages',              label: 'Software & Open Science' },
+  { key: 'workshops_conferences', label: 'Conferences, Talks & Workshops' },
+  { key: 'paper_review',          label: 'Peer Review' },
+  { key: 'other',                 label: 'Service & Leadership' },
+];
+
+// ── Main ─────────────────────────────────────────────────────────────────────
+async function main() {
+  const [posText, pubText, contactText] = await Promise.all([
+    fetch('csvs/positions.csv').then(r => r.text()),
+    fetch('csvs/publications.csv').then(r => r.text()),
+    fetch('csvs/contact_info.csv').then(r => r.text()),
+  ]);
+
+  const posData     = parseCSV(posText);
+  const pubData     = parseCSV(pubText);
+  const contactData = parseCSV(contactText);
+
+  // Lab list
+  document.getElementById('lab-list').innerHTML = labGroups.map(lg =>
+    `<div class="lab-item"><a href="${lg.url}">${lg.name}</a><br><span class="lab-inst">${lg.inst}</span></div>`
+  ).join('');
+
+  // Contact list
+  document.getElementById('contact-list').innerHTML = contactData.map(row =>
+    `<div class="contact-item">${faIcon(row.icon)}<a href="${row.url}">${row.display}</a></div>`
+  ).join('');
+
+  // Research interests
+  document.getElementById('research-interests').innerHTML =
+    secHTML('Research Interests') +
+    `<p class="research-p">I'm interested in ecological dynamics and mechanisms that underlie change in
+    ecosystems over time and space. My research focuses on biotic interactions and how ecosystems respond
+    to environmental and climate change. Much of my previous research has focused on long-term ecological
+    trajectories and palaeoecology. I am now exploring contemporary ecosystem change through
+    process-based models.</p>`;
+
+  // All sections
+  const sectionsEl = document.getElementById('sections');
+  manifest.forEach(({ key, label }) => {
+    let html = secHTML(label);
+    if (key === 'publications') {
+      const pubs = pubData.filter(r => r.in_resume === 'TRUE');
+      html += `<ul class="pub-list">${pubs.map(renderPub).join('')}</ul>`;
+    } else if (key === 'paper_review') {
+      const rows = posData.filter(r => r.section === key && r.in_resume === 'TRUE');
+      html += renderReviewTable(rows);
+    } else if (key === 'packages') {
+      const rows = posData.filter(r => r.section === key && r.in_resume === 'TRUE');
+      html += rows.map(r => renderRow(r, false)).join('');
+    } else {
+      const rows = posData.filter(r => r.section === key && r.in_resume === 'TRUE');
+      html += rows.map(r => renderRow(r)).join('');
+    }
+    sectionsEl.innerHTML += html;
+  });
+}
+
+main().catch(err => {
+  document.getElementById('content').innerHTML =
+    `<p style="color:red;padding:2em">Could not load CV data: ${err.message}.<br>
+    This page must be served from a web server — open it via GitHub Pages or
+    run <code>python -m http.server</code> locally.</p>`;
+});
+</script>
+
+</body>
+</html>
