@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(powershell.exe -ExecutionPolicy Bypass -Command 'Get-Command typst -ErrorAction SilentlyContinue | Select-Object -ExpandProperty Source; \\(Get-Command typst -ErrorAction SilentlyContinue\\) -eq $null')",
+      "Bash(powershell.exe -ExecutionPolicy Bypass -Command '& { $env:PATH -split '\\\\'';'\\\\'' | ForEach-Object { if \\(Test-Path \"$_\\\\typst.exe\"\\) { $_ } } }')",
+      "WebFetch(domain:quinnasena.github.io)"
+    ]
+  }
+}
