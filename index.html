@@ -141,9 +141,9 @@
 
 <aside id="sidebar">
   <div class="sb-name">Quinn Asena</div>
-  <div class="sb-tagline">Ecologist &amp; Data Scientist</div>
+  <div class="sb-tagline">Data Scientist &amp; Ecologist</div>
   <div class="sb-affil">Cary Institute of Ecosystem Studies</div>
-  <div class="sb-affil">Forest Futures Lab, New York State</div>
+  <div class="sb-affil">Forest Futures Lab, Millbrook, NY</div>
 
   <div class="s-head">Contact</div>
   <div id="contact-list"></div>
@@ -152,7 +152,7 @@
   <div id="lab-list"></div>
 
   <div class="s-head">Skills &amp; Tools</div>
-  <div class="skills-text">R · Python · c++ · Bash · HPC · Git</div>
+  <div class="skills-text">R · Python · C++ · Bash · Slurm/PBS · HPC · Git · SQL · Apache Arrow</div>
 
   <div class="s-head">Interests</div>
   <div class="hobbies-text">Classical piano · Rock climbing · Art</div>
@@ -322,11 +322,12 @@ async function main() {
   // Research interests
   document.getElementById('research-interests').innerHTML =
     secHTML('Research Interests') +
-    `<p class="research-p">I'm interested in ecological dynamics and mechanisms that underlie change in
-    ecosystems over time and space. My research focuses on biotic interactions and how ecosystems respond
-    to environmental and climate change. Much of my previous research has focused on long-term ecological
-    trajectories and palaeoecology. I am now exploring contemporary ecosystem change through
-    process-based models.</p>`;
+    `<p class="research-p">I am an ecologist and data scientist focused on how ecosystems change over time
+    and space, and on building the data infrastructure needed to study them. My current work couples
+    process-based landscape simulation with CMIP6 climate scenarios on HPC systems, producing large,
+    heterogeneous environmental datasets that demand careful curation and metadata. My background spans
+    palaeoecology, contemporary ecosystem modelling, and the statistical and computational methods
+    that link the two.</p>`;
 
   // All sections
   const sectionsEl = document.getElementById('sections');
