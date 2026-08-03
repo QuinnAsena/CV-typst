@@ -10,7 +10,7 @@
 
 // Main palette
 #let theme-accent  = rgb("#147C91")
-#let theme-muted   = luma(0%)
+#let theme-muted   = luma(35%)
 
 // Typography
 #let theme-font    = "New Computer Modern"
@@ -233,11 +233,6 @@
   ])
 }
 
-#let render-review-table(rows) = table(
-  columns: (auto, 1fr), stroke: none, inset: (x: 0em, y: 0.28em),
-  ..rows.map(r => (text(style: "italic")[#r.title], [#r.institution])).flatten()
-)
-
 #let dates-str(row) = {
   let (s, e) = (row.start, row.end)
   if s == "" and e == "" { none }
@@ -247,13 +242,27 @@
   else { s + " – " + e }
 }
 
+// Journals only, with the review year right-aligned like every other date in the CV.
+// The reviewed manuscript titles are confidential and deliberately NOT rendered — they
+// sit unused in the `institution` column of positions.csv. Do not surface them.
+// Defined after dates-str because Typst resolves identifiers at definition time.
+#let render-review-table(rows) = table(
+  columns: (1fr, auto), stroke: none, inset: (x: 0em, y: 0.28em),
+  ..rows.map(r => (
+    text(style: "italic")[#r.title],
+    align(right, text(size: 9pt, style: "italic", fill: theme-muted)[#dates-str(r)]),
+  )).flatten()
+)
+
 #let render-row(row, show-dates: true) = {
   let title-c = if row.url != "" { link(row.url)[#row.title] } else { [#row.title] }
   let descs = (row.description_1, row.description_2, row.description_3).filter(d => d != "")
   cventry(
     title: title-c,
-    org:   if row.institution != "" { row.institution } else { none },
-    loc:   if row.loc != "" { row.loc } else { none },
+    // NB: cventry's `org` slot renders top-right and `loc` renders under the title, so
+    // the CSV columns cross over here: location → org, institution → loc.
+    org:   if row.loc != "" { row.loc } else { none },
+    loc:   if row.institution != "" { row.institution } else { none },
     dates: if show-dates { dates-str(row) } else { none },
     body:  if descs.len() == 0 { none } else { list(..descs.map(d => parse-inline(d))) },
   )
@@ -281,16 +290,15 @@
 // ══════════════════════════════════════════════════════════════════════════════
 
 #section("Research Interests")
-I am an ecologist and data scientist focused on how ecosystems change over time
+// NB: bold in Typst markup is *single* asterisks. The **double** form used in the CSV
+// description fields only works there, via parse-inline.
+I am an *ecologist and data scientist* focused on how ecosystems change over time
 and space, and on building the data infrastructure needed to study them.
-My current work couples process-based landscape simulation with CMIP6 climate
-scenarios on HPC systems to project scenarios of forest biodiversity change.
+My current work includes deep learning methods for *wildfire risk mapping*,
+and process-based *landscape simulation* with CMIP6 climate scenarios on HPC
+systems to project forest biodiversity change.
 My background spans palaeoecology, contemporary ecosystem modelling,
 and the statistical and computational methods that link the two.
-
-
-
-
 
 #for entry in manifest-p1 {
   render-section(entry.key, entry.label)
