@@ -78,6 +78,12 @@
 
 #let sidebar-panel = block(width: sidebar-w)[
   #show link: set text(fill: white)
+  // White-on-teal can't use colour to signal a link (the body's teal is the sidebar's
+  // background), so use a hairline underline instead. The stroke is translucent white
+  // to stay quiet, and `evade` (Typst's default) breaks the rule around descenders so
+  // it doesn't collide with the q/y/g/@ in the email address. All sidebar text stays
+  // pure white — at 4.86:1 on this teal there is no contrast headroom to dim anything.
+  #show link: underline.with(offset: 0.18em, stroke: 0.4pt + rgb(255, 255, 255, 150))
   #set text(fill: white, size: 8.5pt, font: theme-font)
   #pad(left: 0.85cm, right: 0.75cm, top: 2.2cm, bottom: 1.5cm)[
 
