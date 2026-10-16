@@ -173,27 +173,32 @@
 // ══════════════════════════════════════════════════════════════════════════════
 // HELPERS
 // ══════════════════════════════════════════════════════════════════════════════
+// Inline markup for CSV text: [text](url), **bold**, _italic_, ^superscript^.
+// The earliest match wins; on a tie the earlier pattern in this list wins.
+#let inline-pats = (
+  (regex("\[([^\]]+)\]\(([^)]+)\)"), m => link(m.captures.at(1))[#m.captures.at(0)]),
+  (regex("\*\*([^*]+)\*\*"),         m => strong[#m.captures.at(0)]),
+  (regex("_([^_]+)_"),               m => emph[#m.captures.at(0)]),
+  (regex("\^([^^]+)\^"),             m => super[#m.captures.at(0)]),
+)
+
 #let parse-inline(s) = {
-  let link-pat = regex("\[([^\]]+)\]\(([^)]+)\)")
-  let bold-pat = regex("\*\*([^*]+)\*\*")
   let result = ()
   let rem = s
   while rem.len() > 0 {
-    let lm = rem.match(link-pat)
-    let bm = rem.match(bold-pat)
-    let use-link = lm != none and (bm == none or lm.start <= bm.start)
-    let use-bold = bm != none and (lm == none or bm.start < lm.start)
-    if use-link {
-      if lm.start > 0 { result.push(rem.slice(0, lm.start)) }
-      result.push(link(lm.captures.at(1))[#lm.captures.at(0)])
-      rem = rem.slice(lm.end)
-    } else if use-bold {
-      if bm.start > 0 { result.push(rem.slice(0, bm.start)) }
-      result.push(strong[#bm.captures.at(0)])
-      rem = rem.slice(bm.end)
-    } else {
+    let best = none
+    for (pat, render) in inline-pats {
+      let m = rem.match(pat)
+      if m != none and (best == none or m.start < best.at(0).start) { best = (m, render) }
+    }
+    if best == none {
       result.push(rem)
       rem = ""
+    } else {
+      let (m, render) = best
+      if m.start > 0 { result.push(rem.slice(0, m.start)) }
+      result.push(render(m))
+      rem = rem.slice(m.end)
     }
   }
   result.join()
@@ -214,13 +219,13 @@
     // Left: title bold, then location muted below
     block[
       *#title*
-      #if loc != none { linebreak(); text(size: 9pt, fill: theme-muted, style: "italic")[#loc] }
+      #if loc != none { linebreak(); text(size: 9pt, style: "italic")[#loc] }
     ],
     // Right: institution top, dates below
     align(right)[
       #if org != none   { text(size: 9pt, style: "italic")[#org] }
       #if org != none and dates != none { linebreak() }
-      #if dates != none { text(size: 9pt, style: "italic", fill: theme-muted)[#dates] }
+      #if dates != none { text(size: 9pt, style: "italic")[#dates] }
     ],
   )
   if body != none { v(0.12em); pad(left: theme-indent, body) }
@@ -230,9 +235,10 @@
 #let render-pub(row) = {
   set list(tight: true, marker: [•])
   list(block(below: 0.45em, above: 0em)[
-    #parse-inline(row.authors) (#row.year).
-    #if row.url != "" { link(row.url)[#row.title] } else { [#row.title] }.
-    #emph[#row.journal].
+    #parse-inline(row.authors) (#row.year.replace(" ", "\u{00A0}")).
+    #if row.url != "" { link(row.url)[#parse-inline(row.title)] } else { emph[#parse-inline(row.title)] }.
+    // In-review rows have no journal yet; skip it rather than print a stray ". ."
+    #if row.journal != "" [#emph[#row.journal].]
     #if row.note != "" {
       if row.note_url != "" { link(row.note_url)[#row.note] } else { [#row.note] }
     }
@@ -256,7 +262,7 @@
   columns: (1fr, auto), stroke: none, inset: (x: 0em, y: 0.28em),
   ..rows.map(r => (
     text(style: "italic")[#r.title],
-    align(right, text(size: 9pt, style: "italic", fill: theme-muted)[#dates-str(r)]),
+    align(right, text(size: 9pt, style: "italic")[#dates-str(r)]),
   )).flatten()
 )
 
